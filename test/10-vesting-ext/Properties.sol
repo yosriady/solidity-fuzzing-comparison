@@ -26,4 +26,7 @@ abstract contract Properties is Setup, Asserts {
 
     // TODO: write an additional invariant. If you need to track additional
     // ghost variables, add them to `Setup` storage
+    function property_preclaimed_tokens_sum_eq_max_reclaimable_tokens() public view returns(bool result) {
+        result = totalPreclaimed == MAX_RECLAIMABLE;
+    }
 }

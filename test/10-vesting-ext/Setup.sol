@@ -12,7 +12,9 @@ abstract contract Setup is BaseSetup {
     // ghost variables
     address[] recipients;
 
-    // TODO: add any new ghost variables here
+    // TODO: add any new ghost variables here to track system state
+    uint96 totalPreclaimed;
+    uint96 MAX_RECLAIMABLE;
 
     function setup() internal virtual override {
         // use two recipients with equal allocation
@@ -30,5 +32,10 @@ abstract contract Setup is BaseSetup {
         inputs[1].vestingWeeks = 10;
 
         vesting = new VestingExt(inputs);
+
+        // calcualte snd save total max preclaimable tokens
+        for(uint256 i; i<recipients.length; i++) {
+            MAX_RECLAIMABLE += vesting.getUserMaxPreclaimable(vesting.getUserTokenAllocation(inputs[i].points));
+        }
     }
 }

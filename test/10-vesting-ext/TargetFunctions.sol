@@ -35,6 +35,12 @@ abstract contract TargetFunctions is BaseTargetFunctions, Properties {
     // additional ghost variables, add them to `Setup` storage and update
     // in this handler
     function handler_preclaim(uint256 userIndex) external {
+        userIndex = between(userIndex, 0, recipients.length-1);
 
+        address sender = recipients[userIndex];
+        vm.prank(sender);
+        uint96 userPreclaimed = vesting.preclaim();
+
+        totalPreclaimed += userPreclaimed;
     }
 }
